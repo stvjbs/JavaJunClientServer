@@ -9,8 +9,6 @@ public class ClientManager implements Runnable {
     private BufferedReader bufferedReader;
     private BufferedWriter bufferedWriter;
     private String name;
-
-
     public static ArrayList<ClientManager> clients = new ArrayList<>();
 
     public ClientManager(Socket socket) {
@@ -22,7 +20,6 @@ public class ClientManager implements Runnable {
             name = bufferedReader.readLine();
             System.out.println(name + " joined to chat.");
             broadcastMessage("Server: " + name + " joined to chat.");
-
         } catch (IOException e) {
             closeEverything(socket, bufferedReader, bufferedWriter);
         }
@@ -41,7 +38,7 @@ public class ClientManager implements Runnable {
                 socket.close();
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
     }
 
@@ -66,7 +63,7 @@ public class ClientManager implements Runnable {
             System.out.println("No user " + privateMessageFinder(message));
         } else {
             for (ClientManager client2 : clients) {
-                if (!client2.name.equals(this.name) && message != null) {
+                if (!client2.name.equals(this.name)) {
                     bufWriter(message, client2);
                 }
             }

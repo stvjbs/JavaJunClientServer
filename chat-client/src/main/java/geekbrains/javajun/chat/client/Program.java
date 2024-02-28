@@ -3,7 +3,6 @@ package geekbrains.javajun.chat.client;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.util.Scanner;
 
 public class Program {
@@ -12,7 +11,7 @@ public class Program {
         System.out.print("Введите ваше имя: ");
         String name = scanner.nextLine();
         InetAddress address = InetAddress.getLocalHost();
-        Socket socket = new Socket(address,5665);
+        Socket socket = new Socket(address, 5665);
         Client client = new Client(socket, name);
 
         InetAddress inetAddress = socket.getInetAddress();
@@ -23,6 +22,5 @@ public class Program {
 
         client.listenForMessage();
         client.sendMessage();
-
     }
 }

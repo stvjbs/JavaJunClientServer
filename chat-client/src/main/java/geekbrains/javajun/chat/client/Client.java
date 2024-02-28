@@ -2,7 +2,6 @@ package geekbrains.javajun.chat.client;
 import java.io.*;
 import java.net.Socket;
 import java.util.Scanner;
-
 public class Client {
     private final Socket socket;
     private final String name;
@@ -16,27 +15,22 @@ public class Client {
             bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
             bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         } catch (IOException e) {
-            closeEverything(socket,bufferedReader,bufferedWriter);
+            closeEverything(socket, bufferedReader, bufferedWriter);
         }
     }
-
-    public void listenForMessage(){
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                String message;
-                while(socket.isConnected()){
-                    try {
-                        message = bufferedReader.readLine();
-                        System.out.println(message);
-                    } catch (IOException e) {
-                        closeEverything(socket,bufferedReader,bufferedWriter);
-                    }
+    public void listenForMessage() {
+        new Thread(() -> {
+            String message;
+            while (socket.isConnected()) {
+                try {
+                    message = bufferedReader.readLine();
+                    System.out.println(message);
+                } catch (IOException e) {
+                    closeEverything(socket, bufferedReader, bufferedWriter);
                 }
             }
         }).start();
     }
-
     private void closeEverything(Socket socket, BufferedReader bufferedReader, BufferedWriter bufferedWriter) {
         try {
             if (bufferedReader != null) {
@@ -49,15 +43,14 @@ public class Client {
                 socket.close();
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
     }
-    public void sendMessage(){
+    public void sendMessage() {
         try {
             bufferedWriter.write(name);
             bufferedWriter.newLine();
             bufferedWriter.flush();
-
             Scanner scanner = new Scanner(System.in);
             while (socket.isConnected()) {
                 String message = scanner.nextLine();
@@ -65,9 +58,8 @@ public class Client {
                 bufferedWriter.newLine();
                 bufferedWriter.flush();
             }
-        }
-        catch(Exception e){
-            closeEverything(socket,bufferedReader,bufferedWriter);
+        } catch (Exception e) {
+            closeEverything(socket, bufferedReader, bufferedWriter);
         }
     }
 }

@@ -5,15 +5,14 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public class Server {
-
     private final ServerSocket serverSocket;
 
     public Server(ServerSocket serverSocket) {
         this.serverSocket = serverSocket;
     }
 
-    public void runServer(){
-        while(!serverSocket.isClosed()){
+    public void runServer() {
+        while (!serverSocket.isClosed()) {
             try {
                 Socket socket = serverSocket.accept();
                 System.out.println("Новый клиент подключен");
@@ -25,11 +24,12 @@ public class Server {
             }
         }
     }
-    private void closeSocket(){
-        try{
-        if(serverSocket != null) serverSocket.close();
+
+    private void closeSocket() {
+        try {
+            if (serverSocket != null) serverSocket.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
     }
 }
